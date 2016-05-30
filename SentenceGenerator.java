@@ -38,9 +38,12 @@ public class SentenceGenerator {
      * @throws IOException If an input exception occurs.
      */
     private void run() throws IOException {
-        
-        // TODO: Your code goes here
-        
+    	BufferedReader readLine = getFileReader();
+    	grammar = new Grammar(readLine);
+        grammar.print();
+        for (int j = 0; j < 20; j++){
+        	printAsSentence(generate("<sentence>"));
+        }        
     }
     
     /**
@@ -53,10 +56,20 @@ public class SentenceGenerator {
      */
     List<String> generate(String term) {
         List<String> result = new ArrayList<String>();
-
-        // TODO: Your code goes here
-
-        return result;
+        ListOfDefinitions listDef = grammar.getDefinitions(term);
+        SingleDefinition singleDef = (SingleDefinition) chooseRandomElement(listDef);
+        if (singleDef.get(0).charAt(0) == ('<')){
+        	for(int i = 0; i < singleDef.size(); i++){
+        		if (singleDef.get(0).charAt(0) == ('<')){
+        			result.addAll(generate(singleDef.get(i)));
+        		}
+        		
+        	}
+        }
+        else {
+        	result.addAll(singleDef);
+        }
+    	return result;
     }
 
     /**
@@ -76,7 +89,17 @@ public class SentenceGenerator {
      * @param list The words to be printed.
      */
     void printAsSentence(List<String> list) {
-        // TODO: Your code goes here
+    	System.out.printf("%s ", list.get(0).substring(0, 1).toUpperCase() + list.get(0).substring(1));
+    	for (int x = 1; x < list.size(); x++){
+    		if (x == list.size() -1){
+    			System.out.printf("%s", list.get(x));
+    		}
+    		else{
+    			System.out.printf("%s ", list.get(x));
+    		}
+    	}
+    	System.out.print(".");
+    	System.out.println("");
     }
     
     /**
@@ -84,11 +107,19 @@ public class SentenceGenerator {
      * 
      * @return The chosen file, or <code>null</code> if none is chosen.
      */
-    private BufferedReader getFileReader() {
-        BufferedReader reader = null;
-        
-        // TODO: Your code goes here
-
-        return reader;
+    private BufferedReader getFileReader() throws IOException{
+    	BufferedReader reader = null;
+    	String fileName;
+    	JFileChooser chooser = new JFileChooser();
+    	chooser.setDialogTitle("Load which file?");
+    	int result = chooser.showOpenDialog(null);
+    	if(result == JFileChooser.APPROVE_OPTION){
+    		File file = chooser.getSelectedFile();
+    		if(file != null){
+    			fileName = file.getCanonicalPath();
+    			reader = new BufferedReader(new FileReader(fileName));
+    		}
+    	}
+    	return reader;
     }
 }

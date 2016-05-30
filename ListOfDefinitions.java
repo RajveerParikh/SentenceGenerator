@@ -6,7 +6,7 @@ import java.util.ArrayList;
  * (each of which is a list of terminals and/or nonterminals), but
  * does not include the thing being defined.
  * 
- * @author <your name goes here>
+ * @author <Rajveer Parikh>
  */
 public class ListOfDefinitions extends ArrayList<SingleDefinition> {
     
@@ -23,6 +23,17 @@ public class ListOfDefinitions extends ArrayList<SingleDefinition> {
      */
     @Override
     public String toString() {
-        return null; // TODO: Your code goes here
+    	String result = "";
+    	int i = 0;
+		for (SingleDefinition myDef : this){
+			if (i == this.size() -1){
+				result += myDef;
+			}
+			else{
+				result += myDef + " | ";
+			}
+			i++;
+		}
+        return result;
     }
 }

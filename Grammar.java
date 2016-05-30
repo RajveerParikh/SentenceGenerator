@@ -6,7 +6,7 @@ import java.util.TreeMap;
 
 /**
  * Represents a BNF grammar.
- * @author <your name goes here>
+ * @author <Rajveer Parikh>
  */
 public class Grammar {
     private Map<String, ListOfDefinitions> grammar; // rules for all the nonterminals
@@ -30,9 +30,12 @@ public class Grammar {
      */
     public Grammar(BufferedReader reader) throws IOException {
         grammar = new TreeMap<>();
-        
-       // TODO: Your code goes here
-        
+        String nextLine = reader.readLine();
+        while (nextLine != null){
+        	addRule(nextLine);
+        	nextLine = reader.readLine();
+        }
+        reader.close();
     }
 
     /**
@@ -47,9 +50,33 @@ public class Grammar {
      * @throws IllegalArgumentException If the input parameter has a syntax error.
      */
     public void addRule(String ruleText) throws IllegalArgumentException {
-        BnfTokenizer tokenizer = new BnfTokenizer(ruleText);
-
-        // TODO: Your code goes here
+    	if(!(ruleText.equals(""))){
+    		BnfTokenizer tokenizer = new BnfTokenizer(ruleText);
+    		SingleDefinition myDef = new SingleDefinition();
+            String keyToken = tokenizer.nextToken();
+            if (isNonterminal(keyToken)){
+                String nextToken = tokenizer.nextToken();
+                while(nextToken != "EOF"){
+                	if (nextToken == "::="){
+                		nextToken = tokenizer.nextToken();
+                		continue;
+                	}
+                	if (nextToken.equals("|")){
+                		addToGrammar(keyToken, myDef);
+                		nextToken = tokenizer.nextToken();
+                		myDef = new SingleDefinition();
+                	}
+                	else{
+                		myDef.add(nextToken);
+                		nextToken = tokenizer.nextToken();
+                	}
+                }
+                addToGrammar(keyToken, myDef);
+            }
+            else{
+            	syntaxError(ruleText);
+            }
+    	}
     }
 
     /**
@@ -61,8 +88,15 @@ public class Grammar {
      * @param singleDefinition The new definition.
      */
     private void addToGrammar(String lhs, SingleDefinition singleDefinition) {
-        // TODO: Your code goes here
+        if(grammar.get(lhs) == null){
+        	grammar.put(lhs,  new ListOfDefinitions());
+        	grammar.get(lhs).add(singleDefinition);
+        }
+        else{
+        	grammar.get(lhs).add(singleDefinition);
+        }
     }
+
 
     /**
      * Throws an <code>IllegalArgumentException</code>, with the input parameter
@@ -89,9 +123,15 @@ public class Grammar {
      * Prints this Grammar.
      */
     public void print() {
-        
-        // TODO: Your code goes here
-        
+    	for(String key : grammar.keySet()){
+    		if(grammar.get(key) == null)
+    			break;
+    		System.out.print(key);
+    		System.out.print(" ");
+    		System.out.print("::= ");
+    		System.out.print(grammar.get(key));
+    		System.out.println();
+    	}
     }
 
     /**

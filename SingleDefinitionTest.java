@@ -6,7 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * @author <your name goes here>
+ * @author <Rajveer Parikh>
  */
 public class SingleDefinitionTest {
 
@@ -22,7 +22,15 @@ public class SingleDefinitionTest {
      */
     @Test
     public final void testToString() {
-        fail("Not yet implemented"); // TODO
+    	SingleDefinition testSingleDef = new SingleDefinition();
+    	SingleDefinition testSingleDef2 = new SingleDefinition();
+    	testSingleDef.add("<adjective>");
+    	testSingleDef.add("<adjectives>");
+    	testSingleDef2.add("<noun phrase>");
+    	testSingleDef2.add("<verb phrase>");
+    	assertEquals("<adjective> <adjectives>", testSingleDef.toString());
+    	assertEquals("<noun phrase> <verb phrase>", testSingleDef2.toString());
+    	
     }
 
 }

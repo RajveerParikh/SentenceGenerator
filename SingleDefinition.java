@@ -11,7 +11,7 @@ import java.util.ArrayList;
  * then &lt;intransitive verb&gt; is a SingleDefinition, and so is
  * &lt;transitive verb&gt; &lt;noun phrase&gt;.
  * 
- * @author <your name goes here>
+ * @author <Rajveer Parikh>
  */
 public class SingleDefinition extends ArrayList<String> {
 
@@ -30,9 +30,14 @@ public class SingleDefinition extends ArrayList<String> {
     @Override
     public String toString() {
         String result = "";
-        
-        // TODO: Your code goes here
-        
+        for (int i = 0; i < this.size(); i++){
+        	if (i == this.size() -1){
+        		result += this.get(i);
+        	}
+        	else{
+        		result += this.get(i) + " ";
+        	}
+        }
         return result;
     }
 }
